@@ -1,0 +1,44 @@
+- name: DynamoDb
+  weight: 3
+- name: TimeStreamDB
+  weight: 1
+- name: Lambda
+  weight: 3
+- name: SQS
+  weight: 2
+- name: SNS
+  weight: 1
+- name: API Gateway
+  weight: 3
+- name: Cognito
+  weight: 1
+- name: S3
+  weight: 3
+- name: CloudFront
+  weight: 1
+- name: ECS
+  weight: 1
+- name: CloudWatch
+  weight: 3
+- name: WAF
+  weight: 1
+- name: IoT Core
+  weight: 1
+- name: Kinesis Firehose
+  weight: 1
+- name: AWS Glue
+  weight: 1
+- name: AWS Batch Job
+  weight: 2
+- name: AWS Private CA
+  weight: 3
+- name: AWS Global Accelerator
+  weight: 1
+- name: SAR
+  weight: 1
+- name: SAM
+  weight: 1
+- name: CloudFormation
+  weight: 3
+- name: Athena
+  weight: 1

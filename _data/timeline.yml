@@ -1,0 +1,78 @@
+- title: Espressif
+  title-url: https://www.espressif.com/
+  date: June 2021 - Present
+  subtitle: Cloud Backend Engineer
+  tags:
+    - tag: Product Management
+    - tag: Serverless
+    - tag: Mentoring
+    - tag: Cloud Architecture
+    - tag: Matter IoT
+    - tag: Cloud Cost Optimizations
+  timeline-side: left
+
+- title: Espressif
+  title-url: https://www.espressif.com/
+  date: Dec 2020 - June 2021
+  subtitle: Associate Cloud Engineer
+  tags:
+    - tag: Golang
+    - tag: Python
+    - tag: AWS
+    - tag: Security
+  timeline-side: left
+
+- title: UBS
+  title-url: https://www.ubs.com/in/en.html
+  date: July 2019 - Nov 2020
+  subtitle: Software Developer
+  tags:
+    - tag: R
+    - tag: TeamCity
+    - tag: Puppet
+    - tag: Risk Management
+  timeline-side: right
+
+- title: Smart India Hackathon 2019
+  title-url: https://sih.gov.in/
+  date: 2019
+  subtitle: Runner Up - Ministry of Textiles.
+  tags:
+    - tag: Node JS
+    - tag: React JS
+    - tag: Mongo DB
+  timeline-side: left
+
+- title: Yoryo technologies 
+  title-url:
+  date: Jan 2019 - Mar 2019
+  subtitle: Blockchain developer Intern
+  tags:
+    - tag: Hyperledger Fabric
+    - tag: Node JS
+    - tag: Linux
+    - tag: Docker
+  timeline-side: right
+
+- title: PICT Robotics
+  title-url: https://pict.edu/robocon/index.php
+  date: Aug 2017 - Mar 2018
+  subtitle: Secured AIR 14 out of 106 teams at national level.
+  tags:
+    - tag: Coding Head
+    - tag: Finance Manager
+    - tag: Embedded C++
+    - tag: Robotic Design
+  timeline-side: left
+
+- title: Pune Institute of Computer Technology
+  title-url: https://pict.edu/
+  date: Aug 2015 - Jun 2019
+  subtitle: B.E. Computer Engineering
+  timeline-side: left
+
+- title: City International School
+  title-url: http://www.cityinternationalschoolwanowrie.com/
+  date: 2013 - 2015
+  subtitle: 12th
+  timeline-side: right

@@ -1,0 +1,17 @@
+- name: Golang
+  weight: 5
+
+- name: R
+  weight: 2
+
+- name: Python
+  weight: 2
+
+- name: HTML5
+  weight: 1
+
+- name: SQL
+  weight: 2
+
+- name: Java
+  weight: 1

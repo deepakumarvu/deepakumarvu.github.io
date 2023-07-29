@@ -1,0 +1,8 @@
+- name: Automated Glaucoma detection using CNN
+  descr: "Detection of Glaucoma which is one of the major cause of blindness using image processing and convocational neural network."
+  demo:
+  tags:
+    - tag: OpenCV
+    - tag: Yolo
+    - tag: AWS
+    - tag: Java

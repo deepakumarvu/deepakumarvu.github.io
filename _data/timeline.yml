@@ -1,3 +1,16 @@
+- title: Espressif
+  title-url: https://www.espressif.com/
+  date: January 2024 - Present
+  subtitle: Senior Cloud Backend Engineer
+  tags:
+    - tag: Product Management
+    - tag: Serverless
+    - tag: Mentoring
+    - tag: Cloud Architecture
+    - tag: Matter IoT
+    - tag: Cloud Cost Optimizations
+  timeline-side: left
+
 - title: Connectivity Standards Alliance
   title-url: https://csa-iot.org/
   date: October 2023 - Present
@@ -10,7 +23,7 @@
 
 - title: Espressif
   title-url: https://www.espressif.com/
-  date: June 2021 - Present
+  date: June 2021 - December 2023
   subtitle: Cloud Backend Engineer
   tags:
     - tag: Product Management

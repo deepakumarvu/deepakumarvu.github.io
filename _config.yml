@@ -5,7 +5,7 @@ baseurl: ""
 
 # LANDING PAGE
 username: Deepakumar
-typing_text: '["Cloud Engineer","AWS Solutions Architect","Product Manager"]'
+typing_text: '["Backend Engineer","AWS Solutions Architect","Product Manager"]'
 email: deepakumarvu@gmail.com
 github_username: deepakumarvu
 codepen_username: 
@@ -40,7 +40,7 @@ show_contact_card: true
 # contact_title: The will be displayed as the title in the Contact section
 contact_title: Get In Touch
 # contact_description: This will be displayed under the title.
-contact_description: Versatile Cloud Backend Engineer with a keen interest in Product Management. Proven track record in scalable cloud-based solutions using AWS and Golang. Strong background in computer science fundamentals, API development, and mentoring. Seeking opportunities to leverage technical expertise and leadership skills to drive product innovation and success. Eager to explore the dynamic realm of product management.
+contact_description: Versatile Engineer with a keen interest in Product Management. Proven track record in scalable cloud-based solutions using AWS and Golang. Strong background in computer science fundamentals, API development, and mentoring. Seeking opportunities to leverage technical expertise and leadership skills to drive product innovation and success. Eager to explore the dynamic realm of product management.
 
 # GITHUB-METADATA
 # Set this to your forked repository

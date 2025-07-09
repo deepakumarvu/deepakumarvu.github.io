@@ -40,7 +40,7 @@ show_contact_card: true
 # contact_title: The will be displayed as the title in the Contact section
 contact_title: Get In Touch
 # contact_description: This will be displayed under the title.
-contact_description: I’m a software engineer with 5+ years of experience in developing scalable, cloud-based solutions using Golang, AWS, and serverless architectures. I’ve led the rapid delivery of high-impact products, earning awards like the ESP-Champion-Club for excellence. My expertise includes optimizing performance, enhancing security by identifying critical vulnerabilities, and streamlining deployments through DevOps integration. I’m also passionate about mentoring junior developers to help them grow. In my free time, I enjoy going on drives, which fuels my creativity and inspires me to approach challenges with fresh perspectives. Let’s connect to explore innovative tech solutions and collaboration opportunities!
+contact_description: I’m a software engineer with 6+ years of experience in developing scalable, cloud-based solutions using Golang, AWS, and serverless architectures. I’ve led the rapid delivery of high-impact products, earning awards like the ESP-Champion-Club for excellence. My expertise includes optimizing performance, enhancing security by identifying critical vulnerabilities, and streamlining deployments through DevOps integration. I’m also passionate about mentoring junior developers to help them grow. In my free time, I enjoy going on drives, which fuels my creativity and inspires me to approach challenges with fresh perspectives. Let’s connect to explore innovative tech solutions and collaboration opportunities!
 
 # GITHUB-METADATA
 # Set this to your forked repository

@@ -1,6 +1,15 @@
-- title: Espressif
+- title: Tuskira Inc
+  title-url: https://www.tuskira.ai/
+  date: August 2025 - Present
+  subtitle: Senior Software Engineer
+  tags:
+    - tag: Microservices
+    - tag: AWS
+  timeline-side: right
+
+- title: Espressif Systems
   title-url: https://www.espressif.com/
-  date: January 2024 - Present
+  date: January 2024 - July 2025
   subtitle: Senior Cloud Backend Engineer
   tags:
     - tag: Product Management
@@ -13,7 +22,7 @@
 
 - title: Connectivity Standards Alliance
   title-url: https://csa-iot.org/
-  date: October 2023 - Present
+  date: October 2023 - July 2025
   subtitle: Vice Chair of SDTT
   tags:
     - tag: Leadership
@@ -21,7 +30,7 @@
     - tag: Matter IoT
   timeline-side: right
 
-- title: Espressif
+- title: Espressif Systems
   title-url: https://www.espressif.com/
   date: June 2021 - December 2023
   subtitle: Cloud Backend Engineer
@@ -34,7 +43,7 @@
     - tag: Cloud Cost Optimizations
   timeline-side: left
 
-- title: Espressif
+- title: Espressif Systems
   title-url: https://www.espressif.com/
   date: Dec 2020 - June 2021
   subtitle: Associate Cloud Engineer

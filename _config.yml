@@ -5,7 +5,7 @@ baseurl: ""
 
 # LANDING PAGE
 username: Deepakumar
-typing_text: '["Backend Engineer","AWS Solutions Architect","Product Manager"]'
+typing_text: '["Backend Engineer","AWS Solutions Architect Professional","Product Manager"]'
 email: deepakumarvu@gmail.com
 github_username: deepakumarvu
 codepen_username: 
@@ -40,7 +40,7 @@ show_contact_card: true
 # contact_title: The will be displayed as the title in the Contact section
 contact_title: Get In Touch
 # contact_description: This will be displayed under the title.
-contact_description: I’m a software engineer with 6+ years of experience in developing scalable, cloud-based solutions using Golang, AWS, and serverless architectures. I’ve led the rapid delivery of high-impact products, earning awards like the ESP-Champion-Club for excellence. My expertise includes optimizing performance, enhancing security by identifying critical vulnerabilities, and streamlining deployments through DevOps integration. I’m also passionate about mentoring junior developers to help them grow. In my free time, I enjoy going on drives, which fuels my creativity and inspires me to approach challenges with fresh perspectives. Let’s connect to explore innovative tech solutions and collaboration opportunities!
+contact_description: I am a Software Engineer with 6+ years of experience designing and building scalable backend systems, cloud-native applications, and secure APIs. My expertise spans Golang, AWS, and Serverless architectures, with a focus on performance, reliability, and automation. Over the years, I’ve worked on solving complex engineering challenges, optimizing infrastructure, and delivering high-impact solutions that align technology with business goals. I have recently joined Tuskira as a Senior Software Engineer, where I contribute to projects in Cybersecurity and Generative AI. I am passionate about applying my skills to cutting-edge domains, collaborating with cross-functional teams, and continuously growing as an engineer. Outside of work, I draw inspiration from long drives and exploring new places, which keeps me refreshed and creative in my problem-solving approach.
 
 # GITHUB-METADATA
 # Set this to your forked repository

@@ -47,6 +47,15 @@ const groups = [
                       )}
                     </div>
                     <span class="tl-role text-muted text-sm">{entry.subtitle}</span>
+                    {entry.parallel && (
+                      <span class="tl-parallel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                        via {entry.parallel}
+                      </span>
+                    )}
                   </div>
                   {entry.tags && entry.tags.length > 0 && (
                     <div class="tl-tags">
@@ -185,6 +194,22 @@ const groups = [
   }
 
   .tl-role { display: block; }
+
+  .tl-parallel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    opacity: 0.85;
+  }
 
   .tl-tags {
     display: flex;

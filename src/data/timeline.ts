@@ -7,6 +7,7 @@ export type TimelineEntry = {
   category: 'work' | 'education';
   badge?: string;
   current?: boolean;
+  parallel?: string; // held concurrently via another employer
 };
 
 export const timeline: TimelineEntry[] = [
@@ -35,6 +36,7 @@ export const timeline: TimelineEntry[] = [
     date: 'Oct 2023 – Jul 2025',
     subtitle: 'Vice Chair of SDTT',
     tags: ['Leadership', 'Security', 'Matter IoT'],
+    parallel: 'Espressif Systems',
   },
   {
     category: 'work',

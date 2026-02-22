@@ -13,7 +13,7 @@ export const timeline: TimelineEntry[] = [
   // ── Work Experience ───────────────────────────────────────
   {
     category: 'work',
-    title: 'Tuskira Inc',
+    title: 'Tuskira Inc.',
     url: 'https://www.tuskira.ai/',
     date: 'Aug 2025 –',
     subtitle: 'Senior Software Engineer',

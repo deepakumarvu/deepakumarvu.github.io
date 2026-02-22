@@ -67,7 +67,6 @@ import Footer from '../components/Footer.astro';
     background: var(--accent-1);
     top: -8%;
     left: -5%;
-    animation: drift1 10s ease-in-out infinite alternate;
   }
 
   .blob-2 {
@@ -76,7 +75,6 @@ import Footer from '../components/Footer.astro';
     background: var(--accent-2);
     top: 15%;
     right: -8%;
-    animation: drift2 13s ease-in-out infinite alternate;
   }
 
   .blob-3 {
@@ -85,30 +83,12 @@ import Footer from '../components/Footer.astro';
     background: var(--accent-3);
     top: 50%;
     left: 35%;
-    animation: drift3 9s ease-in-out infinite alternate;
-  }
-
-  @keyframes drift1 {
-    from { transform: translate(0, 0) scale(1);      border-radius: 60% 40% 55% 45% / 50% 60% 40% 55%; }
-    to   { transform: translate(6%, 8%) scale(1.1);  border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
-  }
-  @keyframes drift2 {
-    from { transform: translate(0, 0) scale(1);        border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; }
-    to   { transform: translate(-5%, 10%) scale(0.95); border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
-  }
-  @keyframes drift3 {
-    from { transform: translate(0, 0) scale(1);         border-radius: 50% 50% 40% 60% / 60% 40% 55% 45%; }
-    to   { transform: translate(-8%, -6%) scale(1.08);  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
   }
 
   @media (max-width: 640px) {
     .blob-1 { width: 300px; height: 300px; }
     .blob-2 { width: 250px; height: 250px; }
     .blob-3 { width: 200px; height: 200px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .blob { animation: none; }
   }
 
   /* Custom cursor */

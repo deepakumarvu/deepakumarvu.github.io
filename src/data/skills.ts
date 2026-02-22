@@ -3,10 +3,7 @@ export type Skill = { name: string; weight: number };
 export const languages: Skill[] = [
   { name: 'Golang', weight: 5 },
   { name: 'Python', weight: 2 },
-  { name: 'SQL', weight: 2 },
   { name: 'R', weight: 2 },
-  { name: 'Java', weight: 1 },
-  { name: 'HTML5', weight: 1 },
 ];
 
 export const aws: Skill[] = [
@@ -35,14 +32,16 @@ export const aws: Skill[] = [
 ];
 
 export const tools: Skill[] = [
+  { name: 'Claude Code', weight: 3 },
+  { name: 'Cursor', weight: 3 },
   { name: 'Git', weight: 3 },
   { name: 'Product Management', weight: 3 },
   { name: 'Docker', weight: 2 },
+  { name: 'Kubernetes', weight: 2 },
   { name: 'Postman', weight: 2 },
   { name: 'JIRA', weight: 2 },
   { name: 'AWS CLI', weight: 2 },
   { name: 'GitLab CI', weight: 2 },
   { name: 'Jenkins', weight: 1 },
   { name: 'Bash', weight: 1 },
-  { name: 'Scrum', weight: 1 },
 ];

@@ -59,14 +59,6 @@
     radial-gradient(ellipse 80% 55% at 58% 88%, rgba(40, 110, 165, 0.08) 0%, transparent 60%),
     radial-gradient(ellipse 50% 60% at 8%  76%, rgba(55, 150, 110, 0.06) 0%, transparent 60%),
     #080418;
-  animation: aurora-breathe 22s ease-in-out infinite alternate;
-}
-@keyframes aurora-breathe {
-  from { filter: hue-rotate(0deg)  brightness(1);    }
-  to   { filter: hue-rotate(22deg) brightness(1.06); }
-}
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-theme="light"]) body::before { animation: none; }
 }
 
 /* Glass surface treatment — backdrop-filter saturate() lets aurora bleed through */
@@ -109,14 +101,6 @@
     radial-gradient(ellipse 80% 55% at 58% 88%, rgba(40, 150, 180, 0.07) 0%, transparent 60%),
     radial-gradient(ellipse 50% 60% at 8%  76%, rgba(60, 180, 130, 0.05) 0%, transparent 60%),
     #faf8ff;
-  animation: aurora-breathe-light 26s ease-in-out infinite alternate;
-}
-@keyframes aurora-breathe-light {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(18deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-theme="light"] body::before { animation: none; }
 }
 
 /* Glass surfaces for light mode — more transparent so aurora tints show through */

@@ -1,4 +1,5 @@
 ---
+const yearsExp = Math.floor((Date.now() - new Date('2019-07-01').getTime()) / (365.25 * 24 * 60 * 60 * 1000));
 ---
 
 <section id="about" class="section">
@@ -23,8 +24,8 @@
       </div>
 
       <!-- Stat: Years -->
-      <div class="card bento-stat reveal" id="yearsStat" style="transition-delay:80ms">
-        <span class="stat-num gradient-text font-display"><span id="yearsCount">6</span></span>
+      <div class="card bento-stat reveal" style="transition-delay:80ms">
+        <span class="stat-num gradient-text font-display">{yearsExp}</span>
         <span class="stat-label text-muted text-sm">years of experience</span>
       </div>
 
@@ -186,31 +187,3 @@
   }
 </style>
 
-<script>
-  const countEl = document.getElementById('yearsCount');
-  const statCard = document.getElementById('yearsStat');
-
-  if (countEl && statCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const target = 6;
-    countEl.textContent = '0';
-
-    const obs = new IntersectionObserver((entries) => {
-      if (!entries[0].isIntersecting) return;
-      obs.disconnect();
-
-      const duration = 1400;
-      const startTime = performance.now();
-
-      const tick = (now: number) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        const eased = 1 - (1 - progress) ** 3; // ease-out cubic
-        const current = Math.round(eased * target);
-        countEl.textContent = current.toString();
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }, { threshold: 0.6 });
-
-    obs.observe(statCard);
-  }
-</script>

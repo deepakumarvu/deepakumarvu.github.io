@@ -1,17 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#c9b8f8"/>
-      <stop offset="100%" stop-color="#f4b8d4"/>
+    <linearGradient id="nb" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9490b0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#b09aaa" stop-opacity="0.25"/>
     </linearGradient>
   </defs>
-  <rect width="32" height="32" rx="8" fill="#13111a"/>
-  <text
-    x="16" y="22"
-    font-family="Georgia, serif"
-    font-size="14"
-    font-weight="600"
-    text-anchor="middle"
-    fill="#c9b8f8"
-  >DU</text>
+  <!-- tile background -->
+  <rect width="32" height="32" rx="8" fill="#1c1238"/>
+  <!-- border -->
+  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="7.5" fill="none" stroke="url(#nb)" stroke-width="1"/>
+  <!-- specular shine -->
+  <rect x="5" y="2.5" width="14" height="2" rx="1" fill="rgba(255,255,255,0.35)"/>
+  <!-- mint accent dot -->
+  <circle cx="26" cy="6" r="3" fill="#8aaa9e" opacity="0.3"/>
+  <circle cx="26" cy="6" r="1.8" fill="#8aaa9e" opacity="0.7"/>
+  <!-- D -->
+  <text x="3" y="23" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#9490b0">D</text>
+  <!-- V overlapping, screen blend -->
+  <text x="11" y="23" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#b09aaa" style="mix-blend-mode:screen">V</text>
 </svg>

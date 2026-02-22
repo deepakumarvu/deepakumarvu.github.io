@@ -3,7 +3,9 @@
 
 <nav class="nav" id="nav">
   <div class="nav-inner container">
-    <a href="#hero" class="nav-logo font-display">DU</a>
+    <a href="#hero" class="nav-logo" aria-label="Home">
+      <img src="/favicon.svg" width="40" height="40" alt="DV"/>
+    </a>
 
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -61,6 +63,8 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 1px 0 var(--border);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   }
 
   .nav-inner {
@@ -70,15 +74,13 @@
   }
 
   .nav-logo {
-    font-size: 1.3rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
     flex-shrink: 0;
+    text-decoration: none;
+    transition: opacity 200ms;
   }
+  .nav-logo:hover { opacity: 0.75; }
 
   .nav-links {
     display: flex;
@@ -111,14 +113,12 @@
   }
   .theme-toggle:hover { color: var(--accent-1); border-color: var(--accent-1); }
 
-  /* Icon visibility: dark shows sun (click → light), light shows moon (click → dark) */
-  [data-theme="dark"]  .icon-sun  { display: block; }
-  [data-theme="dark"]  .icon-moon { display: none;  }
-  [data-theme="light"] .icon-sun  { display: none;  }
-  [data-theme="light"] .icon-moon { display: block; }
-  /* Default (no attr yet) — show sun */
-  :root:not([data-theme="light"]) .icon-sun  { display: block; }
-  :root:not([data-theme="light"]) .icon-moon { display: none;  }
+  /* Both hidden by default — only one shown per theme */
+  .icon-sun, .icon-moon { display: none; }
+  /* Dark / unset → sun */
+  :global(:root:not([data-theme="light"])) .icon-sun  { display: block; }
+  /* Light → moon */
+  :global([data-theme="light"])            .icon-moon { display: block; }
 
   /* Dark mode nav — glass treatment */
   :root:not([data-theme="light"]) .theme-toggle {
@@ -129,10 +129,12 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
   :root:not([data-theme="light"]) .nav.scrolled {
-    background: rgba(8, 4, 24, 0.45);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+    background: rgba(8, 4, 24, 0.18);
+    backdrop-filter: blur(80px) saturate(1.8);
+    -webkit-backdrop-filter: blur(80px) saturate(1.8);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+      0 12px 40px rgba(0, 0, 0, 0.4);
   }
   :root:not([data-theme="light"]) .mobile-menu {
     background: rgba(8, 4, 24, 0.82);
@@ -149,10 +151,12 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
   [data-theme="light"] .nav.scrolled {
-    background: rgba(250, 248, 255, 0.55);
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
-    box-shadow: 0 1px 0 rgba(180, 165, 230, 0.3);
+    background: rgba(200, 185, 255, 0.12);
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
+      0 12px 32px rgba(100, 80, 180, 0.12);
   }
   [data-theme="light"] .mobile-menu {
     background: rgba(250, 248, 255, 0.88);

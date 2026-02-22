@@ -63,8 +63,11 @@ const {
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
+        // 'glass' was a previous theme name — remap to 'dark'
+        const normalised = stored === 'glass' ? 'dark' : stored;
+        if (stored === 'glass') localStorage.setItem('theme', 'dark');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored || (prefersDark ? 'dark' : 'light');
+        const theme = normalised || (prefersDark ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>

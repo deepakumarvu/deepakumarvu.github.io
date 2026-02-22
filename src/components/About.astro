@@ -28,10 +28,11 @@
         <span class="stat-label text-muted text-sm">years of experience</span>
       </div>
 
-      <!-- Stat: Role -->
+      <!-- Current role -->
       <div class="card bento-stat reveal" style="transition-delay:120ms">
-        <span class="stat-num gradient-text font-display" style="font-size:2rem">SWE</span>
-        <span class="stat-label text-muted text-sm">Senior Engineer @ Tuskira</span>
+        <span class="role-now font-mono text-xs">▶ Current</span>
+        <span class="role-title font-display gradient-text">Senior Engineer</span>
+        <span class="stat-label text-muted text-sm">@ Tuskira</span>
       </div>
 
       <!-- AWS Pro cert -->
@@ -100,6 +101,17 @@
 
   .stat-num { font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1; }
   .stat-label { display: block; margin-top: 0.2rem; }
+
+  .role-now {
+    color: var(--accent-3);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.2rem;
+  }
+  .role-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    line-height: 1.3;
+    padding-bottom: 0.1em;
+  }
 
   /* Cert tiles */
   .cert-badge {

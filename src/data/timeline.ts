@@ -6,6 +6,7 @@ export type TimelineEntry = {
   tags?: string[];
   category: 'work' | 'education';
   badge?: string;
+  current?: boolean;
 };
 
 export const timeline: TimelineEntry[] = [
@@ -14,9 +15,10 @@ export const timeline: TimelineEntry[] = [
     category: 'work',
     title: 'Tuskira Inc',
     url: 'https://www.tuskira.ai/',
-    date: 'Aug 2025 – Present',
+    date: 'Aug 2025 –',
     subtitle: 'Senior Software Engineer',
     tags: ['Microservices', 'AWS', 'Cybersecurity', 'GenAI'],
+    current: true,
   },
   {
     category: 'work',
@@ -87,11 +89,11 @@ export const timeline: TimelineEntry[] = [
   },
   {
     category: 'education',
-    title: 'PICT Robocon',
+    title: 'ABU Robocon',
     url: 'https://pict.edu/robocon/index.php',
     date: 'Aug 2017 – Mar 2018',
-    subtitle: 'AIR 14 / 106 teams — National Level',
-    badge: 'Club',
+    subtitle: 'AIR 14 / 106 teams — National Level · PICT Robotics',
+    badge: 'Competition',
     tags: ['Embedded C++', 'Robotic Design'],
   },
 ];

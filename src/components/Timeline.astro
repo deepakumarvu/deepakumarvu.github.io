@@ -18,8 +18,11 @@ const groups = [
           <h3 class="tl-group-label font-mono">{label}</h3>
           <div class="tl-list">
             {entries.map((entry, i) => (
-              <div class="tl-card reveal" style={`transition-delay:${i * 60}ms`}>
-                <div class="tl-date font-mono text-sm text-muted">{entry.date}</div>
+              <div class={`tl-card reveal${entry.current ? ' tl-current' : ''}`} style={`transition-delay:${i * 60}ms`}>
+                <div class="tl-date font-mono text-sm text-muted">
+                  {entry.date}
+                  {entry.current && <span class="tl-now-badge">● Present</span>}
+                </div>
                 <div class="tl-content">
                   <div class="tl-header">
                     <div class="tl-title-row">
@@ -27,29 +30,28 @@ const groups = [
                         ? <a href={entry.url} target="_blank" rel="noreferrer" class="tl-title">{entry.title} ↗</a>
                         : <span class="tl-title">{entry.title}</span>
                       }
-                      {entry.badge && <span class="tl-badge" data-badge={entry.badge}>{entry.badge}</span>}
+                      {entry.badge && (
+                        entry.badge === 'Competition'
+                          ? (
+                            <span class="tl-badge-trophy" title="Competition">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/>
+                                <path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/>
+                                <path d="M6 3h12v8a6 6 0 0 1-12 0V3z"/>
+                                <path d="M12 17v4"/>
+                                <path d="M8 21h8"/>
+                              </svg>
+                            </span>
+                          )
+                          : <span class="tl-badge" data-badge={entry.badge}>{entry.badge}</span>
+                      )}
                     </div>
                     <span class="tl-role text-muted text-sm">{entry.subtitle}</span>
                   </div>
                   {entry.tags && entry.tags.length > 0 && (
                     <div class="tl-tags">
                       {entry.tags.map((tag) =>
-                        tag.startsWith('CGPA')
-                          ? (
-                            <span class="chip chip-cgpa">
-                              {tag}
-                              <span class="cgpa-popup" aria-hidden="true">
-                                <span class="cgpa-popup-label">
-                                  <span>CGPA</span>
-                                  <span class="cgpa-popup-score">8.88 <span class="cgpa-popup-total">/ 10</span></span>
-                                </span>
-                                <span class="cgpa-bar-track">
-                                  <span class="cgpa-bar-fill"></span>
-                                </span>
-                              </span>
-                            </span>
-                          )
-                          : <span class="chip">{tag}</span>
+                        <span class="chip">{tag}</span>
                       )}
                     </div>
                   )}
@@ -164,22 +166,22 @@ const groups = [
     padding: 0.1rem 0.5rem;
     border-radius: 999px;
     flex-shrink: 0;
-    /* default: mint — Internship */
-    background: var(--accent-3-glow);
-    color: var(--accent-3);
-    border: 1px solid var(--accent-3);
-  }
-  /* Competition — blush */
-  .tl-badge[data-badge="Competition"] {
+    /* default: blush — Internship */
     background: var(--accent-2-glow);
     color: var(--accent-2);
-    border-color: var(--accent-2);
+    border: 1px solid var(--accent-2);
   }
-  /* Club — lavender */
-  .tl-badge[data-badge="Club"] {
-    background: var(--accent-1-glow);
-    color: var(--accent-1);
-    border-color: var(--accent-1);
+  .tl-badge-trophy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--accent-3-glow);
+    border: 1px solid var(--accent-3);
+    color: var(--accent-3);
+    flex-shrink: 0;
   }
 
   .tl-role { display: block; }
@@ -192,95 +194,48 @@ const groups = [
   .tl-tags .chip { font-size: 0.68rem; padding: 0.12rem 0.55rem; }
 
   /* ── CGPA chip ───────────────────────────────────────────── */
-  .chip-cgpa {
-    position: relative;
-    cursor: default;
-    border-color: var(--accent-1);
-    color: var(--accent-1);
+  /* ── Current role highlight ──────────────────────────────── */
+  .tl-current {
+    background: none;
+    border-bottom: none !important;
+    margin-bottom: 0.5rem;
+    padding-right: 1rem;
   }
-
-  .cgpa-popup {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    width: 160px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    box-shadow: var(--shadow-md);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 200ms ease, transform 200ms ease;
-    z-index: 10;
-  }
-
-  /* Arrow */
-  .cgpa-popup::after {
+  /* Glowing accent line that sits on top of the grey timeline border */
+  .tl-current::after {
     content: '';
     position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: var(--border);
+    left: -2px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-1), color-mix(in srgb, var(--accent-1) 20%, transparent));
+    box-shadow: 0 0 10px var(--accent-1-glow);
+  }
+  .tl-current::before {
+    width: 12px;
+    height: 12px;
+    left: -7px;
+    background: var(--accent-1) !important;
+    box-shadow: 0 0 0 3px var(--accent-1-glow), 0 0 10px var(--accent-1);
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+  @keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px var(--accent-1-glow), 0 0 10px var(--accent-1); }
+    50%       { box-shadow: 0 0 0 6px var(--accent-1-glow), 0 0 18px var(--accent-1); }
   }
 
-  .chip-cgpa:hover .cgpa-popup {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  .cgpa-popup-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 0.7rem;
-    color: var(--fg-muted);
+  .tl-now-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.3rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--accent-1);
     font-family: 'JetBrains Mono', monospace;
   }
-
-  .cgpa-popup-score {
-    font-size: 1rem;
-    font-weight: 700;
-    font-family: 'Fraunces', serif;
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .cgpa-popup-total {
-    font-size: 0.65rem;
-    font-family: 'JetBrains Mono', monospace;
-    -webkit-text-fill-color: var(--fg-muted);
-    color: var(--fg-muted);
-  }
-
-  .cgpa-bar-track {
-    display: block;
-    width: 100%;
-    height: 5px;
-    background: var(--border);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  .cgpa-bar-fill {
-    display: block;
-    height: 100%;
-    width: 0%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .chip-cgpa:hover .cgpa-bar-fill { width: 88.8%; }
-
 
   .tl-resume { margin-top: 2.5rem; }
 

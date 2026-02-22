@@ -16,6 +16,14 @@ import Footer from '../components/Footer.astro';
   <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
   <Nav />
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
+
   <main>
     <Hero />
     <hr class="divider" />
@@ -60,9 +68,51 @@ import Footer from '../components/Footer.astro';
   @media (hover: hover) and (pointer: fine) {
     .cursor-dot { display: block; }
   }
+
+  /* Back to top */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 90;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 300ms ease, transform 300ms ease, color 200ms, border-color 200ms, box-shadow 200ms;
+    pointer-events: none;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover {
+    color: var(--accent-1);
+    border-color: var(--accent-1);
+    box-shadow: 0 0 14px var(--accent-1-glow);
+  }
 </style>
 
 <script>
+  // Back to top
+  const backToTop = document.getElementById('backToTop')!;
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('visible', window.scrollY > window.innerHeight * 0.5);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
   // Custom cursor
   const dot = document.getElementById('cursorDot');
   if (dot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {

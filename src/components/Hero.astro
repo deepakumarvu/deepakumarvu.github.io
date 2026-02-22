@@ -247,11 +247,25 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-    color: var(--fg-muted);
+    color: var(--fg);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     animation: bob 2s ease-in-out infinite;
-    transition: color 200ms;
+    transition: color 200ms, border-color 200ms, box-shadow 200ms;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
-  .scroll-hint:hover { color: var(--accent-1); }
+  .scroll-hint:hover {
+    color: var(--accent-1);
+    border-color: var(--accent-1);
+    box-shadow: 0 0 12px var(--accent-1-glow);
+  }
 
   @keyframes bob {
     0%, 100% { transform: translateX(-50%) translateY(0); }

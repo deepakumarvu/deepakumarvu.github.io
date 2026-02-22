@@ -1,0 +1,173 @@
+---
+---
+
+<section id="about" class="section">
+  <div class="container">
+    <p class="section-label reveal">About</p>
+    <h2 class="text-xl font-display reveal" style="margin-bottom:2.5rem">Who am I</h2>
+
+    <div class="bento">
+      <!-- Bio card — wide -->
+      <div class="card bento-bio reveal">
+        <p class="text-muted text-sm section-label" style="margin-bottom:0.75rem">The short version</p>
+        <p style="line-height:1.8">
+          Versatile engineer with a passion for building things that scale. I design and ship
+          secure, cloud-native backend systems — primarily in <strong>Golang</strong> on <strong>AWS</strong>.
+          At <a href="https://www.tuskira.ai/" target="_blank" rel="noreferrer" class="link-accent">Tuskira</a>
+          I'm applying that to Cybersecurity and Generative AI. Outside of engineering I'm drawn to
+          product strategy, having led cross-functional efforts and held a standards leadership role at
+          the <a href="https://csa-iot.org/" target="_blank" rel="noreferrer" class="link-accent">Connectivity Standards Alliance</a>.
+        </p>
+      </div>
+
+      <!-- Stat: Years -->
+      <div class="card bento-stat reveal" style="transition-delay:80ms">
+        <span class="stat-num gradient-text font-display">6+</span>
+        <span class="stat-label text-muted text-sm">years of experience</span>
+      </div>
+
+      <!-- Stat: Role -->
+      <div class="card bento-stat reveal" style="transition-delay:120ms">
+        <span class="stat-num gradient-text font-display" style="font-size:2rem">SWE</span>
+        <span class="stat-label text-muted text-sm">Senior Engineer @ Tuskira</span>
+      </div>
+
+      <!-- AWS Pro cert -->
+      <a
+        href="https://www.credly.com/badges/310a94d4-446a-41ca-9fce-59fa5c56d443/linked_in_profile"
+        target="_blank"
+        rel="noreferrer"
+        class="card bento-cert reveal"
+        style="transition-delay:160ms"
+      >
+        <img src="/aws-pro.png" alt="AWS Solutions Architect Professional badge" class="cert-badge" />
+        <div>
+          <p class="cert-title">AWS Solutions Architect</p>
+          <p class="cert-level">Professional</p>
+          <p class="cert-dates font-mono">Jun 2025 – Jun 2028</p>
+        </div>
+      </a>
+
+      <!-- AWS Associate cert -->
+      <a
+        href="https://www.credly.com/badges/382e0d88-5d62-4fb6-82a5-437d6dccbc3f/linked_in_profile"
+        target="_blank"
+        rel="noreferrer"
+        class="card bento-cert reveal"
+        style="transition-delay:200ms"
+      >
+        <img src="/aws-assoc.png" alt="AWS Solutions Architect Associate badge" class="cert-badge cert-badge-assoc" />
+        <div>
+          <p class="cert-title">AWS Solutions Architect</p>
+          <p class="cert-level">Associate</p>
+          <p class="cert-dates font-mono">Jun 2022 – Jun 2028</p>
+        </div>
+      </a>
+
+      <!-- Location -->
+      <div class="card bento-loc reveal" style="transition-delay:240ms">
+        <div class="loc-content">
+          <svg class="loc-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="loc-city">Pune, India</span>
+        </div>
+        <div class="loc-tags">
+          <span class="loc-tag">On-site</span>
+          <span class="loc-sep">·</span>
+          <span class="loc-tag">Remote</span>
+          <span class="loc-sep">·</span>
+          <span class="loc-tag">Relocate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .bento-bio  { grid-column: 1 / 3; }
+  .bento-stat { grid-column: span 1; display: flex; flex-direction: column; gap: 0.3rem; justify-content: center; }
+  .bento-cert { grid-column: span 2; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; }
+  .bento-loc  { grid-column: span 4; display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+
+  .stat-num { font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1; }
+  .stat-label { display: block; margin-top: 0.2rem; }
+
+  /* Cert tiles */
+  .cert-badge {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 8px var(--accent-1-glow));
+    transition: transform 300ms ease;
+  }
+  .bento-cert:hover .cert-badge { transform: scale(1.08) rotate(-2deg); }
+
+  /* Greyscale tint for associate (lower tier) */
+  .cert-badge-assoc { filter: drop-shadow(0 2px 8px var(--accent-3-glow)) saturate(0.7); }
+
+  .cert-title {
+    font-weight: 600;
+    font-size: 0.88rem;
+    line-height: 1.3;
+  }
+  .cert-level {
+    font-size: 0.78rem;
+    color: var(--accent-1);
+    font-weight: 500;
+    margin-top: 0.1rem;
+  }
+  .cert-dates {
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Location tile */
+  .loc-content {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .loc-icon { color: var(--accent-2); flex-shrink: 0; }
+  .loc-city { font-weight: 600; }
+
+  .loc-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .loc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.65rem;
+  }
+  .loc-sep { color: var(--border); font-size: 0.8rem; }
+
+  @media (max-width: 768px) {
+    .bento { grid-template-columns: 1fr 1fr; }
+    .bento-bio  { grid-column: 1 / -1; }
+    .bento-cert { grid-column: span 1; }
+    .bento-loc  { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento-cert { grid-column: 1; }
+    .bento-stat { flex-direction: row; align-items: center; gap: 1rem; }
+  }
+</style>

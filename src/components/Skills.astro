@@ -1,0 +1,102 @@
+---
+import { languages, aws, tools } from '../data/skills';
+
+const categories = [
+  { id: 'languages', label: 'Languages', skills: languages },
+  { id: 'aws',       label: 'AWS Cloud',  skills: aws },
+  { id: 'tools',     label: 'Tools',      skills: tools },
+];
+---
+
+<section id="skills" class="section">
+  <div class="container">
+    <p class="section-label reveal">Skills</p>
+    <h2 class="text-xl font-display reveal" style="margin-bottom:2.5rem">What I work with</h2>
+
+    <!-- Category tabs -->
+    <div class="tabs reveal" role="tablist">
+      {categories.map(({ id, label }, i) => (
+        <button
+          class={`tab-btn ${i === 0 ? 'active' : ''}`}
+          data-tab={id}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Chip groups -->
+    {categories.map(({ id, skills }, i) => (
+      <div class={`chip-group ${i === 0 ? 'active' : ''}`} data-panel={id}>
+        {skills.map(({ name, weight }) => (
+          <span class={`chip chip-w${weight}`} title={`Weight: ${weight}/5`}>{name}</span>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 0.4rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .tab-btn:hover { border-color: var(--accent-1); color: var(--accent-1); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    border-color: transparent;
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  .chip-group {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .chip-group.active { display: flex; }
+
+  /* Weight-based sizing */
+  .chip-w1 { font-size: 0.72rem; opacity: 0.8; }
+  .chip-w2 { font-size: 0.78rem; }
+  .chip-w3 { font-size: 0.84rem; }
+  .chip-w4 { font-size: 0.9rem; font-weight: 500; }
+  .chip-w5 {
+    font-size: 0.96rem;
+    font-weight: 600;
+    border-color: var(--accent-1);
+    color: var(--accent-1);
+  }
+</style>
+
+<script>
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  const panels  = document.querySelectorAll<HTMLDivElement>('.chip-group');
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      panels.forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.querySelector(`[data-panel="${target}"]`)?.classList.add('active');
+    });
+  });
+</script>

@@ -1,0 +1,204 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Dark theme (default) */
+  --bg: #13111a;
+  --bg-alt: #0e0c14;
+  --surface: #1e1b2e;
+  --surface-hover: #26223a;
+  --border: #2d2845;
+  --fg: #ede9f8;
+  --fg-muted: #8a84a0;
+  --accent-1: #c9b8f8;   /* lavender */
+  --accent-2: #f4b8d4;   /* blush */
+  --accent-3: #b8f0e0;   /* mint */
+  --accent-1-glow: rgba(201, 184, 248, 0.2);
+  --accent-2-glow: rgba(244, 184, 212, 0.2);
+  --accent-3-glow: rgba(184, 240, 224, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --blob-blend: screen;
+}
+
+[data-theme="light"] {
+  --bg: #faf8ff;
+  --bg-alt: #f0ecff;
+  --surface: #ffffff;
+  --surface-hover: #f5f2ff;
+  --border: #e2daf8;
+  --fg: #1e1b2e;
+  --fg-muted: #6b6180;
+  --accent-1: #7c5cbf;   /* deep purple */
+  --accent-2: #c05891;   /* rose */
+  --accent-3: #2d9e7a;   /* teal */
+  --accent-1-glow: rgba(124, 92, 191, 0.15);
+  --accent-2-glow: rgba(192, 88, 145, 0.15);
+  --accent-3-glow: rgba(45, 158, 122, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --blob-blend: multiply;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.7;
+  transition: background-color 350ms ease, color 350ms ease;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Selection */
+::selection { background: var(--accent-1); color: var(--bg); }
+
+/* ─── Typography Scale ───────────────────────────────────────────────────────── */
+.font-display { font-family: 'Fraunces', Georgia, serif; }
+.font-mono    { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; line-height: 1.15; font-weight: 600; }
+
+.text-hero   { font-size: clamp(2.8rem, 7vw, 6rem); }
+.text-xl     { font-size: clamp(1.6rem, 3.5vw, 2.5rem); }
+.text-lg     { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+.text-base   { font-size: 1rem; }
+.text-sm     { font-size: 0.875rem; }
+.text-xs     { font-size: 0.75rem; }
+.text-muted  { color: var(--fg-muted); }
+
+/* ─── Gradient text ──────────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 60%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Layout Utilities ───────────────────────────────────────────────────────── */
+.container {
+  width: min(1100px, 92vw);
+  margin-inline: auto;
+}
+
+.section {
+  padding: clamp(4rem, 10vw, 7rem) 0;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-1);
+}
+
+/* ─── Links ──────────────────────────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link-accent {
+  color: var(--accent-1);
+  transition: color 200ms;
+}
+.link-accent:hover { color: var(--accent-2); }
+
+/* ─── Buttons ────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+.btn:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  box-shadow: 0 0 12px var(--accent-1-glow);
+}
+
+/* ─── Pill / Chip ────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg-muted);
+  transition: all 200ms ease;
+  cursor: default;
+}
+.chip:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  box-shadow: 0 0 10px var(--accent-1-glow);
+  transform: scale(1.04);
+}
+
+/* ─── Scroll Reveal Animations ───────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}

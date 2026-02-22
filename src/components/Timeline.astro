@@ -1,0 +1,298 @@
+---
+import { work, education } from '../data/timeline';
+
+const groups = [
+  { label: 'Work Experience', entries: work },
+  { label: 'Education & College Activities', entries: education },
+];
+---
+
+<section id="experience" class="section">
+  <div class="container">
+    <p class="section-label reveal">Career</p>
+    <h2 class="text-xl font-display reveal">Experience &amp; Education</h2>
+
+    <div class="tl-groups">
+      {groups.map(({ label, entries }) => (
+        <div class="tl-group reveal">
+          <h3 class="tl-group-label font-mono">{label}</h3>
+          <div class="tl-list">
+            {entries.map((entry, i) => (
+              <div class="tl-card reveal" style={`transition-delay:${i * 60}ms`}>
+                <div class="tl-date font-mono text-sm text-muted">{entry.date}</div>
+                <div class="tl-content">
+                  <div class="tl-header">
+                    <div class="tl-title-row">
+                      {entry.url
+                        ? <a href={entry.url} target="_blank" rel="noreferrer" class="tl-title">{entry.title} ↗</a>
+                        : <span class="tl-title">{entry.title}</span>
+                      }
+                      {entry.badge && <span class="tl-badge" data-badge={entry.badge}>{entry.badge}</span>}
+                    </div>
+                    <span class="tl-role text-muted text-sm">{entry.subtitle}</span>
+                  </div>
+                  {entry.tags && entry.tags.length > 0 && (
+                    <div class="tl-tags">
+                      {entry.tags.map((tag) =>
+                        tag.startsWith('CGPA')
+                          ? (
+                            <span class="chip chip-cgpa">
+                              {tag}
+                              <span class="cgpa-popup" aria-hidden="true">
+                                <span class="cgpa-popup-label">
+                                  <span>CGPA</span>
+                                  <span class="cgpa-popup-score">8.88 <span class="cgpa-popup-total">/ 10</span></span>
+                                </span>
+                                <span class="cgpa-bar-track">
+                                  <span class="cgpa-bar-fill"></span>
+                                </span>
+                              </span>
+                            </span>
+                          )
+                          : <span class="chip">{tag}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="tl-resume reveal">
+      <a href="/resume.pdf" target="_blank" rel="noreferrer" class="btn">
+        Download full résumé ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tl-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .tl-group-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+  }
+
+  .tl-list {
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--border);
+  }
+
+  .tl-card {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 1rem;
+    padding: 1.25rem 0 1.25rem 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .tl-card:last-child { border-bottom: none; }
+
+  .tl-card::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 1.6rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-1);
+    border: 2px solid var(--bg);
+    transition: background 200ms;
+  }
+  .tl-card:hover::before { background: var(--accent-2); }
+
+  /* Education group uses accent-3 (mint) dots */
+  .tl-group:last-child .tl-card::before { background: var(--accent-3); }
+  .tl-group:last-child .tl-card:hover::before { background: var(--accent-2); }
+  .tl-group:last-child .tl-group-label { color: var(--accent-3); }
+
+  .tl-date {
+    padding-top: 0.1rem;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+  .tl-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tl-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .tl-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--fg);
+    text-decoration: none;
+    transition: color 200ms;
+  }
+  a.tl-title:hover { color: var(--accent-1); }
+
+  .tl-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tl-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    flex-shrink: 0;
+    /* default: mint — Internship */
+    background: var(--accent-3-glow);
+    color: var(--accent-3);
+    border: 1px solid var(--accent-3);
+  }
+  /* Competition — blush */
+  .tl-badge[data-badge="Competition"] {
+    background: var(--accent-2-glow);
+    color: var(--accent-2);
+    border-color: var(--accent-2);
+  }
+  /* Club — lavender */
+  .tl-badge[data-badge="Club"] {
+    background: var(--accent-1-glow);
+    color: var(--accent-1);
+    border-color: var(--accent-1);
+  }
+
+  .tl-role { display: block; }
+
+  .tl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .tl-tags .chip { font-size: 0.68rem; padding: 0.12rem 0.55rem; }
+
+  /* ── CGPA chip ───────────────────────────────────────────── */
+  .chip-cgpa {
+    position: relative;
+    cursor: default;
+    border-color: var(--accent-1);
+    color: var(--accent-1);
+  }
+
+  .cgpa-popup {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 160px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+    z-index: 10;
+  }
+
+  /* Arrow */
+  .cgpa-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--border);
+  }
+
+  .chip-cgpa:hover .cgpa-popup {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .cgpa-popup-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .cgpa-popup-score {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cgpa-popup-total {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    -webkit-text-fill-color: var(--fg-muted);
+    color: var(--fg-muted);
+  }
+
+  .cgpa-bar-track {
+    display: block;
+    width: 100%;
+    height: 5px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .cgpa-bar-fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .chip-cgpa:hover .cgpa-bar-fill { width: 88.8%; }
+
+
+  .tl-resume { margin-top: 2.5rem; }
+
+  @media (max-width: 900px) {
+    .tl-groups { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  @media (max-width: 500px) {
+    .tl-card {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+      padding-left: 1.25rem;
+    }
+  }
+</style>

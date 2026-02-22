@@ -1,0 +1,28 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span class="text-muted text-sm">© {year} Deepakumar V U</span>
+    <span class="text-muted text-sm">
+      Built with <a href="https://astro.build" target="_blank" rel="noreferrer" class="link-accent">Astro</a>
+      &amp; hosted on <a href="https://pages.github.com" target="_blank" rel="noreferrer" class="link-accent">GitHub Pages</a>
+    </span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

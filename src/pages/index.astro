@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Timeline from '../components/Timeline.astro';
+import Projects from '../components/Projects.astro';
+import Writing from '../components/Writing.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout>
+  <!-- Custom cursor dot -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <Nav />
+  <main>
+    <Hero />
+    <hr class="divider" />
+    <About />
+    <hr class="divider" />
+    <Skills />
+    <hr class="divider" />
+    <Timeline />
+    <hr class="divider" />
+    <Projects />
+    <hr class="divider" />
+    <Writing />
+    <hr class="divider" />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Custom cursor */
+  @media (hover: hover) and (pointer: fine) {
+    body { cursor: none; }
+    a, button, [role="tab"] { cursor: none; }
+  }
+
+  .cursor-dot {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-1);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 80ms ease, width 200ms ease, height 200ms ease, opacity 200ms ease, background 200ms ease;
+    mix-blend-mode: difference;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cursor-dot { display: block; }
+  }
+</style>
+
+<script>
+  // Custom cursor
+  const dot = document.getElementById('cursorDot');
+  if (dot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let mouseX = 0, mouseY = 0;
+    let dotX = 0, dotY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    function loop() {
+      dotX += (mouseX - dotX) * 0.18;
+      dotY += (mouseY - dotY) * 0.18;
+      dot!.style.left = `${dotX}px`;
+      dot!.style.top  = `${dotY}px`;
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    // Grow on interactive elements
+    document.querySelectorAll('a, button, [role="tab"]').forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        dot!.style.width  = '24px';
+        dot!.style.height = '24px';
+        dot!.style.opacity = '0.6';
+      });
+      el.addEventListener('mouseleave', () => {
+        dot!.style.width  = '10px';
+        dot!.style.height = '10px';
+        dot!.style.opacity = '1';
+      });
+    });
+  }
+</script>

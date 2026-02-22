@@ -14,13 +14,15 @@
   <div class="hero-inner container">
     <!-- Profile photo -->
     <div class="hero-photo-wrap">
-      <img
-        src="/profile.jpg"
-        alt="Deepakumar V U"
-        class="hero-photo"
-        width="200"
-        height="200"
-      />
+      <div class="hero-photo-clip">
+        <img
+          src="/profile.jpg"
+          alt="Deepakumar V U"
+          class="hero-photo"
+          width="200"
+          height="200"
+        />
+      </div>
     </div>
 
     <!-- Text -->
@@ -109,14 +111,24 @@
     to   { border-radius: 60% 40% 45% 55% / 40% 60% 45% 55%; }
   }
 
-  .hero-photo {
-    display: block;
-    width: clamp(140px, 20vw, 200px);
-    height: clamp(140px, 20vw, 200px);
-    object-fit: cover;
+  /* Clip wrapper — holds the border gap + clips the zoomed image */
+  .hero-photo-clip {
+    width: clamp(140px, 22vw, 260px);
+    height: clamp(140px, 22vw, 260px);
     border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%;
     border: 3px solid var(--bg);
+    overflow: hidden;
     animation: photo-border 8s ease-in-out infinite alternate;
+  }
+
+  .hero-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    transform: scale(1.25);
+    transform-origin: center 15%;
   }
 
   /* ── Text ──────────────────────────────────────────────── */

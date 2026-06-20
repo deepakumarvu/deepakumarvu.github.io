@@ -2,199 +2,191 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Skills from '../components/Skills.astro';
-import Timeline from '../components/Timeline.astro';
-import Projects from '../components/Projects.astro';
-import Writing from '../components/Writing.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout>
-  <!-- Fixed aurora blob orbs — constant background, content scrolls over them -->
-  <div class="bg-blobs" aria-hidden="true">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-
-  <!-- Custom cursor dot -->
-  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
   <Nav />
-
-  <!-- Back to top -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
-    </svg>
-  </button>
+  <Hero />
 
   <main>
-    <Hero />
-    <About />
-    <Skills />
-    <Timeline />
-    <Projects />
-    <Writing />
-    <Contact />
+    <!-- transparent spacer so the fixed mesh hero stays interactive -->
+    <section class="hero-space" aria-hidden="true"></section>
+
+    <div class="sheet">
+      <!-- 01 · ABOUT -->
+      <section id="about" class="section">
+        <div class="container">
+          <p class="sec-label reveal"><span>01</span> About</p>
+          <h2 class="sec-title reveal">Engineer of systems that hold up in production.</h2>
+          <div class="about-grid">
+            <p class="lede reveal">
+              Senior software engineer designing scalable backends, cloud-native APIs and
+              serverless architectures - primarily in <strong>Golang on AWS</strong>. Seven years
+              across fintech, IoT at global scale, and now AI-driven cybersecurity, with a focus on
+              performance, reliability and aligning systems with real business goals.
+            </p>
+            <div class="about-meta reveal">
+              <div><span class="k">Now</span><span class="v">Senior Engineer · Tuskira</span></div>
+              <div><span class="k">Focus</span><span class="v">AI agents · Cloud · Security</span></div>
+              <div><span class="k">Certified</span><span class="v">AWS Solutions Architect - Professional</span></div>
+              <div><span class="k">Based</span><span class="v">Pune, India</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 · EXPERIENCE -->
+      <section id="experience" class="section">
+        <div class="container">
+          <p class="sec-label reveal"><span>02</span> Experience</p>
+          <h2 class="sec-title reveal">Seven years, shipping at scale.</h2>
+          <div class="xp" style="margin-top:2.5rem">
+
+            <div class="xp-row reveal">
+              <div class="xp-when">Aug 2025 - Present<span class="badge">Current</span></div>
+              <div>
+                <div class="xp-role"><span class="xp-co">Tuskira Inc.</span> - Senior Software Engineer</div>
+                <p class="xp-sum">Building an AI-powered security platform integrating 150+ tools - authorization, threat-intelligence pipelines and scalable data systems across a multi-repo Go/Python architecture.</p>
+                <ul class="xp-bullets">
+                  <li>Improved the zero-day threat-intelligence pipeline - tuned <strong>AI-agent prompt efficiency</strong>, fixed finding deduplication, and debugged alert enrichment across the full controller-to-ClickHouse data flow.</li>
+                  <li>Optimised GB-scale ClickHouse dashboards, reducing API latency by <strong>70%</strong>.</li>
+                  <li>Designed a full <strong>RBAC authorization</strong> system with SSO (Cognito SAML/OIDC) and JWT-based stateless policy evaluation enforced via gateway middleware.</li>
+                  <li>Built a generic normalization layer unifying <strong>150+ integration sources</strong> into one tagging schema; async export &amp; reporting on Temporal workflows over millions of records.</li>
+                </ul>
+                <p class="xp-tags">Go · Python · AWS · PostgreSQL · ClickHouse · Temporal · Kubernetes · Kafka · gRPC/Protobuf</p>
+              </div>
+            </div>
+
+            <div class="xp-row reveal">
+              <div class="xp-when">Jan 2024 - Jul 2025</div>
+              <div>
+                <div class="xp-role"><span class="xp-co">Espressif Systems</span> - Senior Cloud Backend Engineer</div>
+                <p class="xp-sum">Owned and scaled the Matter DAC service (managed PKI) for millions of IoT devices.</p>
+                <ul class="xp-bullets">
+                  <li>Cut PKI infrastructure cost by <strong>90%</strong> by designing a custom solution over AWS KMS.</li>
+                  <li>Designed and maintained distributed backend systems for high-scale IoT workloads, plus a flexible RBAC system.</li>
+                </ul>
+                <p class="xp-tags">Golang · AWS · Jenkins · Python · GitLab</p>
+              </div>
+            </div>
+
+            <div class="xp-row reveal">
+              <div class="xp-when">Oct 2023 - Jul 2025<span class="badge">Parallel</span></div>
+              <div>
+                <div class="xp-role"><span class="xp-co">Connectivity Standards Alliance</span> - Vice Chair, SDTT</div>
+                <p class="xp-sum">Led security &amp; test-tool standards work for the Matter IoT ecosystem alongside the Espressif role.</p>
+                <p class="xp-tags">Leadership · Security · Matter IoT</p>
+              </div>
+            </div>
+
+            <div class="xp-row reveal">
+              <div class="xp-when">Jun 2021 - Dec 2023</div>
+              <div>
+                <div class="xp-role"><span class="xp-co">Espressif Systems</span> - Cloud Backend Engineer</div>
+                <p class="xp-sum">Serverless cloud architecture and Matter IoT services; mentored engineers across the team.</p>
+                <p class="xp-tags">Serverless · Cloud Architecture · Matter IoT · Mentoring</p>
+              </div>
+            </div>
+
+            <div class="xp-row reveal">
+              <div class="xp-when">Jul 2019 - Nov 2020</div>
+              <div>
+                <div class="xp-role"><span class="xp-co">UBS</span> - Software Developer</div>
+                <p class="xp-sum">Risk-management tooling and delivery automation in a global banking environment.</p>
+                <p class="xp-tags">R · Risk Management · TeamCity · Puppet</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 · WORK -->
+      <section id="work" class="section">
+        <div class="container">
+          <p class="sec-label reveal"><span>03</span> Selected Work</p>
+          <h2 class="sec-title reveal">Things I've built &amp; shipped.</h2>
+          <div class="plates">
+            <a class="plate reveal" href="https://www.tuskira.ai/" target="_blank" rel="noreferrer">
+              <span class="pno">P/01</span>
+              <h3>AI Security Platform</h3>
+              <p>AI agents orchestrating 150+ security tools - threat-intelligence pipelines, RBAC authorization and GB-scale analytics in production.</p>
+              <div class="ptags"><span>AI Agents</span><span>Go</span><span>ClickHouse</span><span>Temporal</span></div>
+            </a>
+            <a class="plate reveal" href="https://csa-iot.org/" target="_blank" rel="noreferrer">
+              <span class="pno">P/02</span>
+              <h3>Matter DAC · Managed PKI</h3>
+              <p>Owned the device attestation / PKI service for millions of Matter IoT devices - 90% infra-cost reduction over a custom KMS design.</p>
+              <div class="ptags"><span>PKI</span><span>AWS</span><span>IoT</span><span>Distributed</span></div>
+            </a>
+            <a class="plate reveal" href="https://github.com/deepakumarvu/tlv_parser" target="_blank" rel="noreferrer">
+              <span class="pno">P/03</span>
+              <h3>TLV Parser</h3>
+              <p>A lightweight Go Tag-Length-Value encoder/decoder for memory-constrained IoT devices. Handles structs via field tags and auto-splits large values.</p>
+              <div class="ptags"><span>Go</span><span>Embedded</span><span>Open Source</span></div>
+            </a>
+            <a class="plate reveal" href="https://github.com/deepakumarvu" target="_blank" rel="noreferrer">
+              <span class="pno">P/04</span>
+              <h3>Glaucoma Detection · CNN</h3>
+              <p>Automated detection of glaucoma - a leading cause of blindness - using image processing and convolutional neural networks.</p>
+              <div class="ptags"><span>OpenCV</span><span>YOLO</span><span>AWS</span></div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 · TOOLKIT -->
+      <section id="toolkit" class="section">
+        <div class="container">
+          <p class="sec-label reveal"><span>04</span> Toolkit</p>
+          <h2 class="sec-title reveal">The stack I reach for.</h2>
+          <div class="toolkit">
+            <div class="tk reveal"><h4>Languages</h4><ul><li>Golang</li><li>Python</li><li>R</li></ul></div>
+            <div class="tk reveal"><h4>Cloud · AWS</h4><ul><li>Lambda · API Gateway</li><li>SQS / SNS / SES</li><li>IoT Core · CloudWatch</li><li>CloudFormation · SAM · WAF</li></ul></div>
+            <div class="tk reveal"><h4>Databases</h4><ul><li>DynamoDB · Timestream</li><li>PostgreSQL</li><li>ClickHouse</li><li>FalkorDB</li></ul></div>
+            <div class="tk reveal"><h4>Security &amp; Systems</h4><ul><li>PKI · AWS Private CA</li><li>RBAC · SSO</li><li>Distributed Systems</li><li>IoT · Matter</li></ul></div>
+            <div class="tk reveal"><h4>DevOps &amp; Platform</h4><ul><li>Docker · Kubernetes</li><li>Temporal · Kafka</li><li>gRPC / Protobuf</li><li>Jenkins · GitLab CI</li></ul></div>
+            <div class="tk reveal"><h4>AI-Assisted Dev</h4><ul><li>Claude Code</li><li>Cursor</li></ul></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · WRITING -->
+      <section id="writing" class="section">
+        <div class="container">
+          <p class="sec-label reveal"><span>05</span> Talks &amp; Writing</p>
+          <h2 class="sec-title reveal">Published work.</h2>
+          <div class="writing">
+            <a class="wr reveal" href="https://www.youtube.com/watch?v=hyyDFiObmhE" target="_blank" rel="noreferrer">
+              <span class="wtype">Talk · Nov ’23</span>
+              <div><h3>Go Coverage in Integration Testing</h3><p>Flash talk at GCI23 on measuring Go code coverage across integration test suites.</p></div>
+              <span class="warr">↗</span>
+            </a>
+            <a class="wr reveal" href="https://developer.espressif.com/blog/matter-and-certificate-revocation/" target="_blank" rel="noreferrer">
+              <span class="wtype">Article · Oct ’23</span>
+              <div><h3>Matter and Certificate Revocation</h3><p>How CRL and the Distributed Compliance Ledger protect the Matter ecosystem from compromised certificates.</p></div>
+              <span class="warr">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 · CONTACT -->
+      <section id="contact" class="section" style="border-bottom:none">
+        <div class="container">
+          <p class="sec-label reveal"><span>06</span> Contact</p>
+          <h2 class="sec-title reveal">Let's build something.</h2>
+          <p class="lede reveal" style="margin-top:1rem;max-width:46ch">Open to senior / staff roles, collaborations, and interesting conversations.</p>
+          <div class="contact-row reveal">
+            <a class="cbtn" href="mailto:deepakumarvu@gmail.com">Email ↗</a>
+            <a class="cbtn" href="https://www.linkedin.com/in/deepakumar-v-u/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a class="cbtn" href="https://github.com/deepakumarvu" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a class="cbtn" href="/resume.pdf" target="_blank" rel="noreferrer">Résumé ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">Deepakumar V U · Portfolio Vol. 07 · © MMXXVI</footer>
+    </div>
   </main>
-  <Footer />
 </BaseLayout>
-
-<style is:global>
-  /* ── Fixed background blob orbs ─────────────────────────── */
-  .bg-blobs {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .blob {
-    position: absolute;
-    border-radius: 60% 40% 55% 45% / 50% 60% 40% 55%;
-    filter: blur(100px);
-    mix-blend-mode: var(--blob-blend);
-    opacity: 0.3;
-  }
-
-  [data-theme="light"] .blob { opacity: 0.12; }
-
-  .blob-1 {
-    width: 520px;
-    height: 520px;
-    background: var(--accent-1);
-    top: -8%;
-    left: -5%;
-  }
-
-  .blob-2 {
-    width: 420px;
-    height: 420px;
-    background: var(--accent-2);
-    top: 15%;
-    right: -8%;
-  }
-
-  .blob-3 {
-    width: 350px;
-    height: 350px;
-    background: var(--accent-3);
-    top: 50%;
-    left: 35%;
-  }
-
-  @media (max-width: 640px) {
-    .blob-1 { width: 300px; height: 300px; }
-    .blob-2 { width: 250px; height: 250px; }
-    .blob-3 { width: 200px; height: 200px; }
-  }
-
-  /* Custom cursor */
-  @media (hover: hover) and (pointer: fine) {
-    body { cursor: none; }
-    a, button, [role="tab"] { cursor: none; }
-  }
-
-  .cursor-dot {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--accent-1);
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 80ms ease, width 200ms ease, height 200ms ease, opacity 200ms ease, background 200ms ease;
-    mix-blend-mode: difference;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .cursor-dot { display: block; }
-  }
-
-  /* Back to top */
-  .back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 90;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 80%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--fg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 300ms ease, transform 300ms ease, color 200ms, border-color 200ms, box-shadow 200ms;
-    pointer-events: none;
-  }
-  .back-to-top.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .back-to-top:hover {
-    color: var(--accent-1);
-    border-color: var(--accent-1);
-    box-shadow: 0 0 14px var(--accent-1-glow);
-  }
-</style>
-
-<script>
-  // Back to top
-  const backToTop = document.getElementById('backToTop')!;
-  window.addEventListener('scroll', () => {
-    backToTop.classList.toggle('visible', window.scrollY > window.innerHeight * 0.5);
-  }, { passive: true });
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-  // Custom cursor
-  const dot = document.getElementById('cursorDot');
-  if (dot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let mouseX = 0, mouseY = 0;
-    let dotX = 0, dotY = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    }, { passive: true });
-
-    function loop() {
-      dotX += (mouseX - dotX) * 0.18;
-      dotY += (mouseY - dotY) * 0.18;
-      dot!.style.left = `${dotX}px`;
-      dot!.style.top  = `${dotY}px`;
-      requestAnimationFrame(loop);
-    }
-    loop();
-
-    // Grow on interactive elements
-    document.querySelectorAll('a, button, [role="tab"]').forEach((el) => {
-      el.addEventListener('mouseenter', () => {
-        dot!.style.width  = '24px';
-        dot!.style.height = '24px';
-        dot!.style.opacity = '0.6';
-      });
-      el.addEventListener('mouseleave', () => {
-        dot!.style.width  = '10px';
-        dot!.style.height = '10px';
-        dot!.style.opacity = '1';
-      });
-    });
-  }
-</script>

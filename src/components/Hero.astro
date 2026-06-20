@@ -1,264 +1,426 @@
 ---
 ---
 
-<section id="hero" class="hero">
-  <!-- Grain overlay -->
-  <svg class="grain" aria-hidden="true">
-    <filter id="grain-filter">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
-      <feColorMatrix type="saturate" values="0"/>
-    </filter>
-    <rect width="100%" height="100%" filter="url(#grain-filter)" opacity="0.04"/>
-  </svg>
+<canvas id="mesh"></canvas>
 
-  <div class="hero-inner container">
-    <!-- Profile photo -->
-    <div class="hero-photo-wrap">
-      <div class="hero-photo-clip">
-        <img
-          src="/profile.jpg"
-          alt="Deepakumar V U"
-          class="hero-photo"
-          width="200"
-          height="200"
-        />
-      </div>
-    </div>
+<div class="hero-photo" id="heroPhoto" aria-hidden="true">
+  <img src="/profile.jpg" alt="" width="800" height="800" />
+</div>
 
-    <!-- Text -->
-    <div class="hero-text">
-      <p class="section-label">Hey there</p>
-      <h1 class="text-hero font-display">
-        I'm <span class="gradient-text">Deepakumar.</span>
-      </h1>
-      <p class="hero-subtitle">
-        Senior Software Engineer &amp; AWS Solutions Architect.<br/>
-        Building secure, scalable cloud-native systems.
-      </p>
-      <div class="hero-roles font-mono text-sm text-muted">
-        <span>Golang</span>
-        <span class="dot">·</span>
-        <span>AWS</span>
-        <span class="dot">·</span>
-        <span>Serverless</span>
-        <span class="dot">·</span>
-        <span>IoT</span>
-        <span class="dot">·</span>
-        <span>Product Management</span>
-      </div>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary">Get in touch</a>
-        <a href="/resume.pdf" target="_blank" rel="noreferrer" class="btn">View résumé ↗</a>
-      </div>
-    </div>
+<div class="hero" id="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Senior Software Engineer · 7 yrs</p>
+    <h1>Deepakumar<br>V U</h1>
+    <p class="hero-sub">I build secure, scalable cloud-native systems - backends, serverless, and the AI agents now running in production.</p>
+    <a href="#contact" class="hero-btn">Get in touch <span>→</span></a>
   </div>
+</div>
 
-  <a href="#about" class="scroll-hint" aria-label="Scroll down">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
-    </svg>
-  </a>
-</section>
+<div class="caption" id="caption">
+  Hover a node &nbsp;·&nbsp; <kbd>click</kbd> to open &nbsp;·&nbsp; scroll to read ↓
+</div>
 
-<style>
-  .hero {
-    position: relative;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
+<div class="agent-hud" id="agentHud"></div>
+
+<aside class="panel" id="panel">
+  <button class="close" id="close" aria-label="Close">✕</button>
+  <div class="kind" id="p-kind"></div>
+  <h2 id="p-title"></h2>
+  <div class="date" id="p-date"></div>
+  <div class="sub" id="p-sub"></div>
+  <div class="tags" id="p-tags"></div>
+  <div class="conn" id="p-conn">
+    <div class="lbl">Connected to</div>
+    <ul id="p-conn-list"></ul>
+  </div>
+  <a class="link" id="p-link" target="_blank" rel="noreferrer" style="display:none">Open ↗</a>
+</aside>
+
+<script>
+import { NODES, EDGES } from '../data/mesh';
+
+/* ── setup ──────────────────────────────────────────────────── */
+const cv = document.getElementById('mesh') as HTMLCanvasElement;
+const ctx = cv.getContext('2d')!;
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const byId = Object.fromEntries(NODES.map(n => [n.id, n]));
+
+/* theme colours read from CSS vars so the canvas tracks light/dark */
+const C: any = {};
+function readColors(){
+  const cs = getComputedStyle(document.documentElement);
+  C.node      = cs.getPropertyValue('--node').trim();
+  C.edge      = cs.getPropertyValue('--edge').trim();
+  C.accent    = cs.getPropertyValue('--accent-rgb').trim();
+  C.accentHex = cs.getPropertyValue('--accent').trim();
+  C.fg        = C.node;
+}
+readColors();
+
+let W=0, H=0, DPR=1, scale=1, ox=0, oy=0;
+let mouse = {x:-1e4, y:-1e4};
+let parallax = {x:0, y:0};
+let hovered: any = null, selected: any = null;
+let start = performance.now();
+
+NODES.forEach((n: any, i) => {
+  n.phase = i * 1.7;            // drift phase
+  n.delay = reduce ? 0 : 220 + i*110;  // commission stagger (ms)
+  n.t = reduce ? 1 : 0;        // activation 0..1
+  n.sx = 0; n.sy = 0;          // current screen coords
+});
+EDGES.forEach((e: any) => e.t = reduce ? 1 : 0);
+
+/* adjacency for the autonomous agent */
+const adj: any = Object.fromEntries(NODES.map(n => [n.id, []]));
+EDGES.forEach(e => { adj[e[0]].push(e[1]); adj[e[1]].push(e[0]); });
+
+/* the autonomous agent - when the page is idle it traverses the graph
+   on its own, the way the AI agents at Tuskira walk a tool/threat graph */
+const agent: any = { from:'you', to:null, prev:null, p:0, state:'pause', until:0, visible:0, trail:[] };
+const agentHud = document.getElementById('agentHud')!;
+
+function agentPickNext(){
+  const opts = adj[agent.from].filter((id: string) => byId[id].t > 0.9);
+  if (!opts.length){ agent.from='you'; agent.to=null; agent.state='pause'; agent.until=performance.now()+300; return; }
+  let choices = opts.filter((id: string) => id !== agent.prev);
+  if (!choices.length) choices = opts;
+  agent.prev = agent.from;
+  agent.to = choices[Math.floor(Math.random()*choices.length)];
+  agent.p = 0; agent.state = 'move';
+}
+const easeInOut = (t: number) => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
+
+let fieldW = 0, fieldH = 0;
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  cv.style.width = W+'px'; cv.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  // fit the normalized constellation into a padded box
+  const padX = Math.min(W*0.14, 180), padY = Math.min(H*0.16, 150);
+  scale = 1; ox = padX; oy = padY;
+  fieldW = W - padX*2; fieldH = H - padY*2;
+}
+window.addEventListener('resize', resize); resize();
+
+/* world → screen for a node (with drift + parallax) */
+function place(n: any, time: number){
+  const drift = reduce ? 0 : 7;
+  const dx = Math.sin(time*0.0004 + n.phase) * drift;
+  const dy = Math.cos(time*0.00033 + n.phase*1.3) * drift;
+  // hub barely drifts; small nodes drift more
+  const f = n.kind==='hub' ? 0.2 : 1;
+  n.sx = ox + n.x*fieldW + dx*f + parallax.x*(1 - n.y*0.4);
+  n.sy = oy + n.y*fieldH + dy*f + parallax.y*(1 - n.x*0.4);
+}
+
+const easeOut = (t: number) => 1 - Math.pow(1-t, 3);
+
+/* ── render loop ────────────────────────────────────────────── */
+function frame(now: number){
+  const elapsed = now - start;
+  ctx.clearRect(0,0,W,H);
+
+  // advance activations
+  for (const n of NODES as any[]){
+    const local = (elapsed - n.delay)/700;
+    n.t = Math.max(0, Math.min(1, local));
+  }
+  for (const e of EDGES as any[]){
+    const a = byId[e[0]].t, b = byId[e[1]].t;
+    const m = Math.min(a,b);
+    e.t = Math.max(0, Math.min(1, (m - 0.55)/0.45));
   }
 
-  /* ── Grain ─────────────────────────────────────────────── */
-  .grain {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 88%);
-    mask-image: linear-gradient(to bottom, black 50%, transparent 88%);
+  // smooth parallax toward mouse
+  if (!reduce){
+    const tx = (mouse.x - W/2) * 0.012;
+    const ty = (mouse.y - H/2) * 0.012;
+    parallax.x += (tx - parallax.x)*0.05;
+    parallax.y += (ty - parallax.y)*0.05;
   }
 
-  /* ── Layout ────────────────────────────────────────────── */
-  .hero-inner {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: clamp(2.5rem, 6vw, 5rem);
-    padding-top: 5rem;
-  }
+  for (const n of NODES) place(n, now);
 
-  /* ── Photo ─────────────────────────────────────────────── */
-  .hero-photo-wrap {
-    flex-shrink: 0;
-    position: relative;
+  // hit-test (only after mostly commissioned)
+  hovered = null;
+  let best = 26*26;
+  for (const n of NODES as any[]){
+    if (n.t < 0.6) continue;
+    const dx = mouse.x-n.sx, dy = mouse.y-n.sy, d = dx*dx+dy*dy;
+    if (d < best){ best = d; hovered = n; }
   }
+  cv.style.cursor = hovered ? 'pointer' : 'default';
 
-  .hero-photo-wrap::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%;
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-    z-index: -1;
-    animation: photo-border 8s ease-in-out infinite alternate;
-  }
-
-  @keyframes photo-border {
-    from { border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%; }
-    to   { border-radius: 60% 40% 45% 55% / 40% 60% 45% 55%; }
-  }
-
-  /* Clip wrapper — holds the border gap + clips the zoomed image */
-  .hero-photo-clip {
-    width: clamp(140px, 22vw, 260px);
-    height: clamp(140px, 22vw, 260px);
-    border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%;
-    border: 3px solid var(--bg);
-    overflow: hidden;
-    animation: photo-border 8s ease-in-out infinite alternate;
-  }
-
-  .hero-photo {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 15%;
-    transform: scale(1.25);
-    transform-origin: center 15%;
-  }
-
-  /* ── Text ──────────────────────────────────────────────── */
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
-    -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      0 8px 32px rgba(0, 0, 0, 0.45);
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-    margin: -1.5rem;
-  }
-
-  :global([data-theme="light"]) .hero-text {
-    background: rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
-    -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      0 8px 32px rgba(100, 80, 180, 0.08);
-  }
-
-  .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--fg);
-    opacity: 0.85;
-    line-height: 1.6;
-    max-width: 480px;
-  }
-
-  .hero-roles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.6rem;
-    align-items: center;
-    color: var(--fg);
-    opacity: 0.7;
-  }
-  .dot { color: var(--accent-1); opacity: 1; }
-
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    color: var(--bg);
-    border-color: transparent;
-    font-weight: 600;
-  }
-  .btn-primary:hover {
-    opacity: 0.88;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px var(--accent-1-glow);
-    color: var(--bg);
-    border-color: transparent;
-  }
-
-  /* ── Scroll hint ───────────────────────────────────────── */
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    color: var(--fg);
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    width: 2.2rem;
-    height: 2.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: bob 2s ease-in-out infinite;
-    transition: color 200ms, border-color 200ms, box-shadow 200ms;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-  }
-  .scroll-hint:hover {
-    color: var(--accent-1);
-    border-color: var(--accent-1);
-    box-shadow: 0 0 12px var(--accent-1-glow);
-  }
-
-  @keyframes bob {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(6px); }
-  }
-
-  /* ── Responsive ────────────────────────────────────────── */
-  @media (max-width: 640px) {
-    .hero-inner {
-      flex-direction: column;
-      text-align: center;
-      gap: 2rem;
-      padding-top: 6rem;
-      padding-bottom: 4rem;
-    }
-    .hero-text {
-      width: 100%;
-      margin: 0;
-      border-radius: 1.25rem;
-    }
-    .hero-roles { justify-content: center; }
-    .hero-cta   { justify-content: center; }
-    .hero-subtitle { margin-inline: auto; }
-    .scroll-hint { display: none; }
-  }
-
-  /* ── Nest Hub & short wide viewports ───────────────────── */
-  @media (max-width: 1024px) {
-    .hero-subtitle,
-    .hero-roles {
-      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+  const active = hovered || selected;
+  const neighbors = new Set();
+  if (active){
+    neighbors.add(active.id);
+    for (const e of EDGES){
+      if (e[0]===active.id) neighbors.add(e[1]);
+      if (e[1]===active.id) neighbors.add(e[0]);
     }
   }
 
-  :global([data-theme="light"]) .hero-subtitle,
-  :global([data-theme="light"]) .hero-roles {
-    text-shadow: none;
+  // ── edges ──
+  for (const e of EDGES as any[]){
+    if (e.t <= 0) continue;
+    const A = byId[e[0]], B = byId[e[1]];
+    const isActive = active && (e[0]===active.id || e[1]===active.id);
+    // draw partial line as it "commissions"
+    const ex = A.sx + (B.sx-A.sx)*e.t;
+    const ey = A.sy + (B.sy-A.sy)*e.t;
+    ctx.beginPath();
+    ctx.moveTo(A.sx, A.sy);
+    ctx.lineTo(ex, ey);
+    ctx.strokeStyle = isActive
+      ? `rgba(${C.accent},0.6)`
+      : `rgba(${C.edge}, ${active ? 0.06 : 0.18})`;
+    ctx.lineWidth = isActive ? 1.4 : 1;
+    ctx.stroke();
+
+    // packets travel along active edges
+    if (isActive && !reduce && e.t > 0.99){
+      const speed = 0.00045;
+      for (let k=0;k<2;k++){
+        let p = ((now*speed) + k*0.5) % 1;
+        // direction: outward from the active node
+        let from = (e[0]===active.id)?A:B, to=(from===A)?B:A;
+        const px = from.sx + (to.sx-from.sx)*p;
+        const py = from.sy + (to.sy-from.sy)*p;
+        ctx.beginPath();
+        ctx.arc(px,py,2.2,0,Math.PI*2);
+        ctx.fillStyle = `rgba(${C.accent},0.95)`;
+        ctx.shadowColor = C.accentHex; ctx.shadowBlur = 8;
+        ctx.fill(); ctx.shadowBlur = 0;
+      }
+    }
   }
-</style>
+
+  // ── nodes ──
+  for (const n of NODES as any[]){
+    if (n.t <= 0) continue;
+    const grow = easeOut(n.t);
+    const r = n.r * grow;
+    const isHub = n.kind==='hub';
+    const isAccent = isHub || n.kind==='work·now' || n.kind==='contact';
+    const dim = active && !neighbors.has(n.id);
+    const isActive = active && n.id===active.id;
+    const isNeighbor = active && neighbors.has(n.id) && !isActive;
+
+    // glow halo
+    if ((isAccent || isActive) && !dim){
+      const g = ctx.createRadialGradient(n.sx,n.sy,0,n.sx,n.sy,r*4.5);
+      g.addColorStop(0, `rgba(${C.accent},${isActive?0.32:0.2})`);
+      g.addColorStop(1, `rgba(${C.accent},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(n.sx,n.sy,r*4.5,0,Math.PI*2); ctx.fill();
+    }
+
+    // ring for current role
+    if (n.kind==='work·now'){
+      ctx.beginPath(); ctx.arc(n.sx,n.sy,r+5,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(${C.accent},${dim?0.15:0.6})`;
+      ctx.lineWidth = 1.2; ctx.stroke();
+    }
+
+    // dot
+    ctx.beginPath(); ctx.arc(n.sx,n.sy,r,0,Math.PI*2);
+    if (isAccent){
+      ctx.fillStyle = `rgba(${C.accent},${dim?0.25:1})`;
+    } else if (n.kind==='education' || n.kind==='competition'){
+      // hollow nodes for education
+      ctx.fillStyle = `rgba(${C.node}, ${dim?0.05:0.09})`;
+      ctx.fill();
+      ctx.beginPath(); ctx.arc(n.sx,n.sy,r,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(${C.node}, ${dim?0.18:isNeighbor?0.95:0.55})`;
+      ctx.lineWidth = 1.3; ctx.stroke();
+      drawLabel(n, dim, isActive||isNeighbor, grow); continue;
+    } else {
+      ctx.fillStyle = `rgba(${C.node}, ${dim?0.22:isNeighbor?1:0.8})`;
+    }
+    if (isActive){ ctx.shadowColor=C.accentHex; ctx.shadowBlur=16; }
+    ctx.fill(); ctx.shadowBlur = 0;
+
+    drawLabel(n, dim, isActive||isNeighbor, grow);
+  }
+
+  // ── autonomous agent ──
+  const dt = now - (agent._last || now);
+  agent._last = now;
+  const idle = !hovered && !selected && !reduce && elapsed > 3200;
+  agent.visible += ((idle ? 1 : 0) - agent.visible) * 0.07;
+
+  if (idle){
+    if (agent.state === 'pause'){
+      if (now > agent.until) agentPickNext();
+    } else if (agent.state === 'move'){
+      if (!agent.to){ agent.state='pause'; agent.until=now+300; }
+      else {
+        agent.p += dt / 1500;
+        if (agent.p >= 1){ agent.p=1; agent.from=agent.to; agent.state='pause'; agent.until=now+1500; }
+      }
+    }
+  }
+
+  // resolve agent screen position
+  let ax, ay, onNode=null;
+  if (agent.state==='move' && agent.to){
+    const A=byId[agent.from], B=byId[agent.to], e=easeInOut(agent.p);
+    ax = A.sx + (B.sx-A.sx)*e; ay = A.sy + (B.sy-A.sy)*e;
+  } else { const Cn=byId[agent.from]; ax=Cn.sx; ay=Cn.sy; onNode=Cn; }
+
+  if (agent.state==='move'){ agent.trail.push({x:ax,y:ay}); if(agent.trail.length>16) agent.trail.shift(); }
+  else if (agent.trail.length) agent.trail.shift();
+
+  if (agent.visible > 0.02){
+    const av = agent.visible;
+    // highlight edge being traversed
+    if (agent.state==='move' && agent.to){
+      const A=byId[agent.from], B=byId[agent.to];
+      ctx.beginPath(); ctx.moveTo(A.sx,A.sy); ctx.lineTo(B.sx,B.sy);
+      ctx.strokeStyle = `rgba(${C.accent},${0.3*av})`; ctx.lineWidth=1.4; ctx.stroke();
+    }
+    // comet trail
+    for (let i=0;i<agent.trail.length;i++){
+      const t=agent.trail[i], k=i/agent.trail.length;
+      ctx.beginPath(); ctx.arc(t.x,t.y,1.4+k*1.8,0,Math.PI*2);
+      ctx.fillStyle = `rgba(${C.accent},${0.28*k*av})`; ctx.fill();
+    }
+    // arrival pulse on node (continuous expanding ring while parked)
+    if (onNode){
+      const ph = (now % 1400)/1400;
+      const pr = onNode.r + 6 + ph*16;
+      ctx.beginPath(); ctx.arc(ax,ay,pr,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(${C.accent},${(1-ph)*0.5*av})`; ctx.lineWidth=1.2; ctx.stroke();
+    }
+    // agent core + ring
+    ctx.beginPath(); ctx.arc(ax,ay,4,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${C.fg},${av})`;
+    ctx.shadowColor=C.accentHex; ctx.shadowBlur=16*av; ctx.fill(); ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.arc(ax,ay,7.5,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(${C.accent},${0.85*av})`; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // agent HUD text
+  if (agent.visible > 0.3){
+    agentHud.style.opacity = String(agent.visible);
+    if (onNode) agentHud.innerHTML = `<span class="ag"></span> agent · reading <b>${onNode.label}</b>${onNode.note?` · ${onNode.note}`:''}`;
+    else if (agent.to) agentHud.innerHTML = `<span class="ag"></span> agent · traversing → <b>${byId[agent.to].label}</b>`;
+  } else { agentHud.style.opacity = '0'; }
+
+  requestAnimationFrame(frame);
+}
+
+function drawLabel(n: any, dim: boolean, emphasize: boolean, grow: number){
+  if (grow < 0.7 || n.kind==='hub') return; // hub uses the HTML hero label
+  const mono = getComputedStyle(document.body).getPropertyValue('--mono');
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  const y = n.sy + n.r + 8;
+
+  // primary label
+  const a = dim ? 0.18 : emphasize ? 1 : 0.6;
+  ctx.font = `${emphasize?'600 ':''}11px ${mono}`;
+  ctx.fillStyle = `rgba(${C.fg},${a})`;
+  ctx.fillText(n.label.toUpperCase(), n.sx, y);
+
+  // secondary descriptor (role · year) - disambiguates repeats like Espressif
+  if (n.note){
+    const a2 = dim ? 0.12 : emphasize ? 0.7 : 0.4;
+    ctx.font = `10px ${mono}`;
+    ctx.fillStyle = `rgba(${C.edge},${a2})`;
+    ctx.fillText(n.note, n.sx, y + 15);
+  }
+}
+
+requestAnimationFrame(frame);
+
+/* ── interaction ────────────────────────────────────────────── */
+window.addEventListener('mousemove', e => { mouse.x=e.clientX; mouse.y=e.clientY; });
+window.addEventListener('mouseleave', () => { mouse.x=-1e4; mouse.y=-1e4; });
+
+cv.addEventListener('click', () => {
+  if (hovered){ openPanel(hovered); }
+  else { closePanel(); }
+});
+
+const panel = document.getElementById('panel')!;
+const hero = document.getElementById('hero')!;
+const caption = document.getElementById('caption')!;
+const heroPhoto = document.getElementById('heroPhoto')!;
+
+function openPanel(n: any){
+  if (n.kind==='hub'){ // clicking yourself just dismisses
+    closePanel(); return;
+  }
+  selected = n;
+  document.getElementById('p-kind')!.textContent = n.kind.replace('·',' · ').toUpperCase();
+  document.getElementById('p-title')!.textContent = n.label;
+  document.getElementById('p-date')!.textContent = n.date || '';
+  document.getElementById('p-sub')!.textContent = n.sub || '';
+  const tagWrap = document.getElementById('p-tags')!;
+  tagWrap.innerHTML = (n.tags||[]).map((t: string)=>`<span class="tag">${t}</span>`).join('');
+
+  // connections
+  const conns: string[] = [];
+  for (const e of EDGES){
+    if (e[0]===n.id) conns.push(e[1]);
+    if (e[1]===n.id) conns.push(e[0]);
+  }
+  const list = document.getElementById('p-conn-list')!;
+  list.innerHTML = [...new Set(conns)].map(id => {
+    const c = byId[id];
+    return `<li data-id="${id}">${c.label}${c.id==='you'?' (you)':''}</li>`;
+  }).join('');
+  list.querySelectorAll('li').forEach(li =>
+    li.addEventListener('click', () => openPanel(byId[(li as HTMLElement).dataset.id!])));
+
+  const link = document.getElementById('p-link') as HTMLAnchorElement;
+  if (n.url){ link.style.display='inline-block'; link.href=n.url;
+    link.textContent = n.kind==='contact' ? 'Email me ↗' : 'Open ↗'; }
+  else link.style.display='none';
+
+  panel.classList.add('open');
+  hero.style.opacity = '0';
+  if (heroPhoto) heroPhoto.style.opacity = '0';
+  caption.style.opacity = '0';
+}
+function closePanel(){
+  selected = null;
+  panel.classList.remove('open');
+  hero.style.opacity = '1';
+  if (heroPhoto) heroPhoto.style.opacity = '1';
+  caption.style.opacity = '1';
+}
+document.getElementById('close')!.addEventListener('click', closePanel);
+window.addEventListener('keydown', e => { if(e.key==='Escape') closePanel(); });
+
+/* fade the caption once the network has finished commissioning */
+if (!reduce){
+  setTimeout(() => { if(!selected) caption.style.opacity = '0.65'; }, 100);
+}
+
+/* ── scroll: nav state, hero fade ───────────────────────────── */
+const navEl = document.getElementById('nav')!;
+
+function onScroll(){
+  const y = window.scrollY, vh = window.innerHeight;
+  navEl.classList.toggle('solid', y > vh*0.55);
+  document.body.classList.toggle('scrolled', y > vh*0.4);
+  const fade = Math.max(0, 1 - y/(vh*0.6));
+  if (!selected) hero.style.opacity = String(fade);
+  if (heroPhoto) heroPhoto.style.opacity = String(fade);
+}
+window.addEventListener('scroll', onScroll, { passive:true });
+onScroll();
+
+/* ── theme toggle (light / dark) ────────────────────────────── */
+document.getElementById('themeToggle')!.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  readColors();   // repaint the mesh in the new palette
+});
+</script>

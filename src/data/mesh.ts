@@ -28,7 +28,7 @@ export const NODES: MeshNode[] = [
     sub:'Vice Chair of SDTT - Connectivity Standards Alliance', date:'Oct 2023 - Jul 2025',
     tags:['Leadership','Security','Matter IoT'], url:'https://csa-iot.org/' },
   { id:'esp2', label:'Espressif', note:'Cloud Backend · ’21', kind:'work', x:0.07, y:0.30, r:8,
-    sub:'Cloud Backend Engineer', date:'Jun 2021 - Dec 2023',
+    sub:'Cloud Backend Engineer', date:'Jul 2021 - Dec 2023',
     tags:['Serverless','Mentoring','Cloud Architecture','Matter IoT'], url:'https://www.espressif.com/' },
   { id:'esp1', label:'Espressif', note:'Associate · ’20', kind:'work', x:0.07, y:0.66, r:7,
     sub:'Associate Cloud Engineer', date:'Dec 2020 - Jun 2021',
